@@ -1,0 +1,33 @@
+{% load static %}
+<header class="header-area header-sticky">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+                    <!-- ***** Logo Start ***** -->
+                    <a href="{% url 'home' %}" class="logo">
+                        <img src="{% static 'assets/images/logo.png' %} alt="" style="width: 158px;">
+                    </a>
+                    <!-- ***** Logo End ***** -->
+                    <!-- ***** Menu Start ***** -->
+                    <ul class="nav">
+                        <li><a href="{% url 'home' %}" {% if request.path == '/' %}class="active"{% endif %}>Home</a>
+                        </li>
+                        <li><a href="{% url 'shop' %}" {% if request.path == '/shop/' %}class="active"{% endif %}>Our
+                            Shop</a></li>
+                        <li><a href="{% url 'contact' %}" {% if request.path == '/contact/' %}class="active"{% endif %}>Contact Us</a></li>
+                        {% if request.user.is_authenticated %}
+                        <li><a href="{% url 'profile' %}">{{ request.user.username }}</a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                        {% else %}
+                        <li><a href="{% url 'login' %}">Sign In</a></li>
+                        {% endif %}
+                    </ul>
+                    <a class='menu-trigger'>
+                        <span>Menu</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>

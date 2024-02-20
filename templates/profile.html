@@ -1,0 +1,46 @@
+{% extends 'base.html' %} 
+
+{% load static %} 
+
+
+{% block title %}
+<title>Profil</title>
+{% endblock %} 
+
+
+
+{% block content %}
+
+<div class="page-heading header-text">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <h3>Profile</h3>
+          <span class="breadcrumb"><a href="#">Home</a>  >  Profile</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="card p-3 mt-5 shadow">
+        <div class="card-title text-center">
+            <h4>Profile Info</h4>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+
+            <input value="{{ user.username }}" class="form-control mb-3" type="text" placeholder="Username" name="username">
+            <input class="form-control mb-3" type="text" placeholder="Old Password" name="password1">
+            <input class="form-control mb-3" type="text" placeholder="New Password" name="password2">
+            
+            {% if error %}
+            <span class="text-danger">{{ error }}</span>
+            {% endif %}
+            <button class="btn btn-success" type="submit">Update</button>
+        </form>
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,112 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>{{ game.title }}</title>
+{% endblock %}
+
+
+
+{% block content %}
+
+  <div class="page-heading header-text">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <h3>{{ game.title }}</h3>
+          <span class="breadcrumb"><a href="#">Home</a>  >  <a href="#">Shop</a>  >  {{ game.title }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="single-product section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="left-image">
+            <img src="{{ game.preview_image.url }}" alt="">
+          </div>
+        </div>
+        <div class="col-lg-6 align-self-center">
+          <h4>{{ game.title }}</h4>
+          <span class="price"><em>${{ game.discount }}</em> ${{ game.price }}</span>
+          <p>{{ game.description }}</p>
+          <a href="#" onclick="downloadCountButton(this)" data-game_id="{{ game.id }}" download="{{ game.file }}" class="btn btn-success"><i class="fa-solid fa-download"></i> Download ({{ game.size }})</a>
+          <ul>
+            <li><span>Views:</span> {{ game.views }}</li>
+            <li><span>Genre:</span> <a href="#">{{ game.genre }}</a></li>
+            <li><span>Downloaded:</span> {{ game.downloaded }}</li>
+            <li><span>Character:</span> {{ game.character }}</li>
+          </ul>
+        </div>
+        <div class="col-lg-12">
+          <div class="sep"></div>
+        </div>
+
+        <div class="triller">
+          <center>
+            <iframe width="1000" height="500" src="https://www.youtube.com/embed/{{ game.triller_url }}" title="{{ game.title }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          </center>
+        </div>
+
+        <div class="col-lg-12">
+          <div class="sep"></div>
+        </div>
+
+        {% if game_screenshots %}
+        <div class="screenshots row">
+
+          {% for screen in game_screenshots %}
+          <div class="col-4 mb-3">
+            <img class="img-fluid" src="{{ screen.image.url }}" alt="">
+          </div>
+          {% endfor %}
+        </div>
+        <div class="col-lg-12">
+          <div class="sep"></div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+ {% if game_reviews or request.user.is_authenticated %}
+  <div class="more-info">
+    <div class="container">
+      <div class="section-heading text-center">
+        <h4>Reviews</h4>
+      </div>
+      {% if game_reviews %}
+      <div class="row border pt-4 shadow pb-4">
+        <div class="col-lg-12">
+            <div class="card p-2 bg-secondary">
+              {% for item in game_reviews %}
+              <div class="border p-2 mb-3">
+                {% if item.user.is_staff %}
+                <span>ADMIN</span>
+                {% endif %}
+
+                <span class="fs-6 text-info">{{ item.user }}</span>
+                <p class="fs-5 text-white">{{ item.review }}</p>
+              </div>
+              {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if request.user.is_authenticated %}
+        <div class="col-lg-12">
+          <form method="post" action="{% url 'game_reviews' game.id %}" class="pt-4">
+            {% csrf_token %}
+            <textarea class="form-control mb-3" name="review_message" cols="30" rows="10"></textarea>
+            <button class="btn btn-primary">Yuborish</button>
+          </form>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  {% endblock %}
